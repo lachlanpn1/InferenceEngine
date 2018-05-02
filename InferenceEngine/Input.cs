@@ -10,6 +10,7 @@ namespace InferenceEngine
 {
     public class Input
     {
+        List<Sentence> _sentences = new List<Sentence>();
         string[] hornClauses;
         string[] fileText;
 
@@ -31,17 +32,26 @@ namespace InferenceEngine
             hornClauses = Regex
                 .Replace(fileText[1], @"=", "")
                 .Split(';');
+
+            Convert();
         }
 
-        public List<Sentence> Convert()
+        private void Convert()
         {
-            List<Sentence> sentences = new List<Sentence>();
             foreach (string clause in hornClauses)
             {
-                sentences.Add(SentenceCreator.convertToSentence(clause));
+                _sentences.Add(SentenceCreator.convertToSentence(clause));
             }
-
-            return sentences;
         }
+
+        public List<Sentence> getSentences
+        {
+            get
+            {
+                return _sentences;
+            }
+        }
+
+        
     }
 }

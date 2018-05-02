@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    class KnowledgeBase
+    static class KnowledgeBase
     {
-        List<Sentence> _kb = new List<Sentence>();
+        static List<Sentence> _kb = new List<Sentence>();
 
+
+        public static void Add(List<Sentence> sentences)
+        {
+            _kb = sentences;
+            Console.WriteLine("b");
+        }
     }
 }

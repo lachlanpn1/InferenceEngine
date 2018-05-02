@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    class Connective
+    enum Connective
     {
+        AND,
+        OR,
+        IMPLICATION,
     }
 }

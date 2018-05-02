@@ -8,13 +8,13 @@ namespace InferenceEngine
 {
     class Program
     {
-        static Input inp;
+        //Input inp;
         static void Main(string[] args)
         {
             Algorithm alg;
-            KnowledgeBase knowledge = new KnowledgeBase();
+            
 
-            inp = new Input(args[1]);
+            Input inp = new Input(args[1]);
             if (args.Length == 2)
             {
                 if (!((args[0] == "TT") || (args[0] == "FC") || (args[0] == "BC")))
@@ -28,7 +28,8 @@ namespace InferenceEngine
             }
             
             //set the list of sentences in the knowledge base
-            //knowledge.Add(inp.Convert());
+            KnowledgeBase.Add(inp.getSentences);
+
 
             switch (args[0])
             {
