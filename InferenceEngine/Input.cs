@@ -32,24 +32,15 @@ namespace InferenceEngine
             hornClauses = Regex
                 .Replace(fileText[1], @"=", "")
                 .Split(';');
-
-            Convert();
         }
 
-        private void Convert()
+        public List<Sentence> Convert()
         {
             foreach (string clause in hornClauses)
             {
                 _sentences.Add(SentenceCreator.convertToSentence(clause));
             }
-        }
-
-        public List<Sentence> getSentences
-        {
-            get
-            {
-                return _sentences;
-            }
+            return _sentences;
         }
 
         

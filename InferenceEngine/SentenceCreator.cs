@@ -18,40 +18,43 @@ namespace InferenceEngine
 
             string temp = new string(clause.TakeWhile(Char.IsLetterOrDigit).ToArray());
             _sentences.Add(new SimpleSentence(temp));
-            clause = clause.Remove(0, temp.Length - 1);
+            clause = clause.Remove(0, temp.Length);
 
 
-            while (clause.Length - 1 > 0)
+            while (clause.Length > 0)
             {
                  switch (clause[0])
                  {
                      case '<':
                         //biconditional
                         break;
-                     case '^':
+                     case '&':
                         _connectives.Add(Connective.AND);
-                        clause = clause.Remove(0);
+                        clause = clause.Remove(0,1);
                         break;
                      case 'v':
                         _connectives.Add(Connective.OR);
-                        clause = clause.Remove(0);
+                        clause = clause.Remove(0,1);
                         break;
                      case '>':
                         _connectives.Add(Connective.IMPLICATION);
-                        clause = clause.Remove(0);
+                        clause = clause.Remove(0,1);
                         break;
                      default:
                          temp = new string(clause.TakeWhile(Char.IsLetterOrDigit).ToArray());
                          _sentences.Add(new SimpleSentence(temp));
-                         clause = clause.Remove(0, temp.Length - 1);
+                         clause = clause.Remove(0, temp.Length);
                          break;
                  }
             }
+
+          
 
             if(_sentences.Count > 1 ) // complex sentence
             {
                 ComplexSentence sentence = new ComplexSentence(_sentences, _connectives);
                 return sentence;
+
             } else
             {
                 return _sentences[0];
