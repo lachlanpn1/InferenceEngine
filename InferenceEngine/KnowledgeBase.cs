@@ -9,8 +9,6 @@ namespace InferenceEngine
     static class KnowledgeBase
     {
         static List<Sentence> _kb = new List<Sentence>();
-
-
         public static void Add(List<Sentence> sentences)
         {
             _kb = sentences;

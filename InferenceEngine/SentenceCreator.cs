@@ -48,8 +48,6 @@ namespace InferenceEngine
                  }
             }
 
-          
-
             if(_sentences.Count > 1 ) // complex sentence
             {
                 ComplexSentence sentence = new ComplexSentence(_sentences, _connectives);

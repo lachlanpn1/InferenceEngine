@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    public class Sentence
+    public abstract class Sentence
     {
     }
 }

@@ -10,7 +10,6 @@ namespace InferenceEngine
 {
     public class Input
     {
-        List<Sentence> _sentences = new List<Sentence>();
         string[] hornClauses;
         string[] fileText;
 
@@ -36,10 +35,24 @@ namespace InferenceEngine
 
         public List<Sentence> Convert()
         {
+            List<SimpleSentence> _simpleSentences = new List<SimpleSentence>();
+            List<ComplexSentence> _complexSentences = new List<ComplexSentence>();
+            List<Sentence> _sentences = new List<Sentence>();
             foreach (string clause in hornClauses)
             {
-                _sentences.Add(SentenceCreator.convertToSentence(clause));
+                if ((SentenceCreator.convertToSentence(clause)) is SimpleSentence)
+                {
+                    _simpleSentences.Add((SimpleSentence)(SentenceCreator.convertToSentence(clause)));
+                }
+
+                if ((SentenceCreator.convertToSentence(clause)) is ComplexSentence)
+                {
+                    _complexSentences.Add((ComplexSentence)(SentenceCreator.convertToSentence(clause)));
+                }
             }
+
+            _sentences.AddRange(_simpleSentences);
+            _sentences.AddRange(_complexSentences);
             return _sentences;
         }
 
