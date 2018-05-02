@@ -28,15 +28,20 @@ namespace InferenceEngine
             //required to get rid of the last element, which will be empty
             fileText[1] = tempFileText[1].Remove(tempFileText[1].Length - 1);
 
-            hornClauses = fileText[1].Split(';');
+            hornClauses = Regex
+                .Replace(fileText[1], @"=", "")
+                .Split(';');
         }
 
-        private void Convert()
+        public List<Sentence> Convert()
         {
+            List<Sentence> sentences = new List<Sentence>();
             foreach (string clause in hornClauses)
             {
-
+                sentences.Add(SentenceCreator.convertToSentence(clause));
             }
+
+            return sentences;
         }
     }
 }

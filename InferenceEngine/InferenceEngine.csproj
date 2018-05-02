@@ -42,9 +42,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackwardChaining.cs" />
+    <Compile Include="ComplexSentence.cs" />
+    <Compile Include="Connective.cs" />
+    <Compile Include="ForwardChaining.cs" />
     <Compile Include="Input.cs" />
+    <Compile Include="KnowledgeBase.cs" />
+    <Compile Include="Algorithm.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sentence.cs" />
+    <Compile Include="SentenceCreator.cs" />
+    <Compile Include="TruthTableChecking.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

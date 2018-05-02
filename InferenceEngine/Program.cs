@@ -11,6 +11,9 @@ namespace InferenceEngine
         static Input inp;
         static void Main(string[] args)
         {
+            Algorithm alg;
+            KnowledgeBase knowledge = new KnowledgeBase();
+
             inp = new Input(args[1]);
             if (args.Length == 2)
             {
@@ -19,22 +22,30 @@ namespace InferenceEngine
                     Console.WriteLine("Error: The second argument must be either TT, FC or BC");
                 }
             }
-
             else
             {
                 Console.WriteLine("Error: There must be 3 command line arguments: the path to ");
             }
+            
+            //set the list of sentences in the knowledge base
+            //knowledge.Add(inp.Convert());
 
             switch (args[0])
             {
                 case "TT":
-                    
+                    alg = new TruthTableChecking();
                     break;
                 case "FC":
+                    alg = new ForwardChaining();
                     break;
                 case "BC":
+                    alg = new BackwardChaining();
+                    break;
+                default:
+                    alg = null;
                     break;
             }
+            Console.WriteLine(alg.Result());
 
             //remove from final file, for testing in VS
             Console.ReadLine();
