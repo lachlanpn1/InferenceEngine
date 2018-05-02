@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    static class SentenceCreator
+    public class SentenceCreator
     {
-      static List<Sentence> _sentences = new List<Sentence>();
-      static List<Connective> _connectives = new List<Connective>();
-      public static Sentence convertToSentence(string clause)
+      private List<SimpleSentence> _sentences = new List<SimpleSentence>();
+      private List<Connective> _connectives = new List<Connective>();
+      public Sentence convertToSentence(string clause)
         {
             // p2>p3
             _sentences.Clear();
@@ -48,19 +48,16 @@ namespace InferenceEngine
                  }
             }
 
-            if(_sentences.Count > 1 ) // complex sentence
+            if(_sentences.Count <= 1 ) // complex sentence
+            {
+                SimpleSentence sentence = (_sentences[0]);
+                return sentence;
+            }
+            else
             {
                 ComplexSentence sentence = new ComplexSentence(_sentences, _connectives);
                 return sentence;
-
-            } else
-            {
-                return _sentences[0];
             }
-         
-            
-
-
         }
     }
 }

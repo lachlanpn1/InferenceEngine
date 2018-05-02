@@ -8,9 +8,9 @@ namespace InferenceEngine
 {
     class ComplexSentence : Sentence
     {
-        List<Sentence> _symbols = new List<Sentence>();
+        List<SimpleSentence> _symbols = new List<SimpleSentence>();
         List<Connective> _connectives = new List<Connective>();
-        public ComplexSentence(List<Sentence> sentences, List<Connective> connectives)
+        public ComplexSentence(List<SimpleSentence> sentences, List<Connective> connectives)
         {
             _symbols = sentences;
             _connectives = connectives; 
