@@ -33,12 +33,12 @@ namespace InferenceEngine
                 .Split(';');
         }
 
-        public List<Sentence> Convert()
-        {
-            SentenceCreator sentC = new SentenceCreator();
-            List<Sentence> _sentences = sentC.convertToSentence(hornClauses);
-            return _sentences;
-        }
+        //public List<Sentence> Convert()
+        //{
+        //    SentenceCreator sentC = new SentenceCreator();
+        //    List<Sentence> _sentences = sentC.ConvertAllSentences(hornClauses);
+        //    return _sentences;
+        //}
 
         
     }

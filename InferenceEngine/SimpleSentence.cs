@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace InferenceEngine
+namespace InferenceEngine2
 {
     class SimpleSentence : Sentence
     {
         string _symbol;
-        public SimpleSentence(string symbol)
+
+        public SimpleSentence(string symbol, bool isFalse) : base(isFalse)
         {
             _symbol = symbol;
         }
 
-        string getSymbol
+        string Symbol
         {
             get
             {

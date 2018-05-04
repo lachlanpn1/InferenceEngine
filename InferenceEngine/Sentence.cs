@@ -1,12 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace InferenceEngine
+namespace InferenceEngine2
 {
-    public abstract class Sentence
+    class Sentence
     {
+        bool _isFalse;
+
+        public Sentence(bool isFalse)
+        {
+            _isFalse = isFalse;
+        }
+
+        bool isFalse
+        {
+            get
+            {
+                return _isFalse;
+            }
+            set
+            {
+                _isFalse = value;
+            }
+        }
     }
 }

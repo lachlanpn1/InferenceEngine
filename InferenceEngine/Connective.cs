@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace InferenceEngine
+namespace InferenceEngine2
 {
-    enum Connective
+    public enum Connective
     {
         AND,
-        OR,
         IMPLICATION,
+        OR,
+        NONE
     }
 }

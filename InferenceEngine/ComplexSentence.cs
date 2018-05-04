@@ -1,19 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace InferenceEngine
+namespace InferenceEngine2
 {
     class ComplexSentence : Sentence
     {
-        List<SimpleSentence> _symbols = new List<SimpleSentence>();
-        List<Connective> _connectives = new List<Connective>();
-        public ComplexSentence(List<SimpleSentence> sentences, List<Connective> connectives)
+        Sentence _head;
+        Sentence _body;
+        Connective _connective;
+
+        public ComplexSentence(Sentence body, Sentence head, bool isFalse, Connective connective) : base(isFalse)
         {
-            _symbols = sentences;
-            _connectives = connectives; 
+            _head = head;
+            _body = body;
+            _connective = connective;
+        }
+
+        Sentence Head
+        {
+            get
+            {
+                return _head;
+            }
+        }
+
+        Sentence Body
+        {
+            get
+            {
+                return _body;
+            }
+        }
+
+        Connective Connective
+        {
+            get
+            {
+                return _connective;
+            }
         }
     }
 }
