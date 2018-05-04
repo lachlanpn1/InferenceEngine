@@ -14,5 +14,18 @@ namespace InferenceEngine
             _kb = sentences;
             Console.WriteLine("b");
         }
+
+        public static List<Sentence> List
+        {
+            get
+            {
+                return _kb;
+            }
+            set
+            {
+                _kb = value;
+            }
+        }
+
     }
 }
