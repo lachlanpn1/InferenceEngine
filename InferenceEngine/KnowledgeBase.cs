@@ -15,7 +15,7 @@ namespace InferenceEngine
             Console.WriteLine("b");
         }
 
-        public static List<Sentence> List
+        public static List<Sentence> KB
         {
             get
             {
