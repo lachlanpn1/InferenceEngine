@@ -13,12 +13,12 @@ namespace InferenceEngine
             _symbol = symbol;
         }
 
-        string Symbol
+        public override List<String> GetSymbols()
         {
-            get
-            {
-                return _symbol;
-            }
+            List<String> temp = new List<String>();
+            temp.Add(_symbol);
+            return temp;
         }
+
     }
 }

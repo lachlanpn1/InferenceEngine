@@ -9,6 +9,7 @@ namespace InferenceEngine
     static class KnowledgeBase
     {
         static List<Sentence> _kb = new List<Sentence>();
+        static List<string> _symbols = new List<string>();
         public static void Add(List<Sentence> sentences)
         {
             _kb = sentences;
@@ -27,5 +28,28 @@ namespace InferenceEngine
             }
         }
 
+        public static List<string> Symbols
+        {
+            get
+            {
+                return getSymbols();
+            }
+        }
+
+        private static List<string> getSymbols()
+        {
+            foreach(Sentence s in _kb)
+            {
+                List<String> temp = s.GetSymbols();
+                foreach(string symbol in temp)
+                {
+                    if (!_symbols.Contains(symbol))
+                    {
+                        _symbols.Add(symbol);
+                    }
+                }
+            }
+            return _symbols;
+        }
     }
 }

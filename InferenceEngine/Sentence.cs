@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InferenceEngine
 {
-    public class Sentence
+    public abstract class Sentence
     {
         bool _isFalse;
 
@@ -24,5 +24,7 @@ namespace InferenceEngine
                 _isFalse = value;
             }
         }
+
+        public abstract List<String> GetSymbols();
     }
 }

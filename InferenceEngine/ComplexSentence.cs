@@ -40,5 +40,29 @@ namespace InferenceEngine
                 return _connective;
             }
         }
+
+        public override List<String> GetSymbols()
+        {
+            List<String> symbols = new List<String>();
+            List<String> temp;
+            // get symbols within head and body
+            temp = Head.GetSymbols();
+            foreach(string s in temp)
+            {
+                if (!symbols.Contains(s))
+                {
+                    symbols.Add(s);
+                }
+            }
+            temp = Body.GetSymbols();
+            foreach (string s in temp)
+            {
+                if (!symbols.Contains(s))
+                {
+                    symbols.Add(s);
+                }
+            }
+            return temp;
+        }
     }
 }
