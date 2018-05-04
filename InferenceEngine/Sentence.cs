@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InferenceEngine2
+namespace InferenceEngine
 {
-    class Sentence
+    public class Sentence
     {
         bool _isFalse;
 

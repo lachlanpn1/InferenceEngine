@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace InferenceEngine2
+namespace InferenceEngine
 {
     class SimpleSentence : Sentence
     {

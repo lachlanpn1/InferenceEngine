@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace InferenceEngine2
+namespace InferenceEngine
 {
     static class SentenceParser
     {

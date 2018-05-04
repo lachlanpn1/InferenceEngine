@@ -28,7 +28,7 @@ namespace InferenceEngine
             }
             
             //set the list of sentences in the knowledge base
-            KnowledgeBase.Add(inp.Convert());
+            //KnowledgeBase.Add(inp.Convert());
 
 
             switch (args[0])
