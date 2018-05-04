@@ -12,5 +12,34 @@ namespace InferenceEngine
         {
             throw new NotImplementedException();
         }
+
+        private bool Entails(List<Sentence> kb, Sentence a)
+        {
+            List<String> symbols = new List<string>();
+
+
+            return CheckAll(kb, a, symbols, model);
+        }
+
+        private bool CheckAll(List<Sentence> kb, Sentence a, List<String> symbols, )
+        {
+            if (symbols.Count < 1)
+            {
+                if (true)
+                {
+
+                }
+
+                else
+                {
+                    return true;
+                }
+            }
+
+            else
+            {
+
+            }
+        }
     }
 }
