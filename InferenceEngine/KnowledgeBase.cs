@@ -4,6 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/* 
+ * 
+ *  Change Symbols to List<Sentence>
+ * Add an entails, model 
+ * 
+ *
+ *
+ */
+
 namespace InferenceEngine
 {
     static class KnowledgeBase
@@ -51,5 +60,8 @@ namespace InferenceEngine
             }
             return _symbols;
         }
+
+
+        
     }
 }
