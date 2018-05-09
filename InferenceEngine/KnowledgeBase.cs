@@ -74,7 +74,7 @@ namespace InferenceEngine
             return currentlyTrue;
         }
 
-        public static bool CheckAll(Sentence a, List<String> symbols, List<String> model)
+        public static bool CheckAll(Model model)
         {
             bool isTrue = true;
             foreach(ComplexSentence s in _kb)
@@ -84,7 +84,16 @@ namespace InferenceEngine
             return isTrue;
         }
 
+        public static bool CheckAll(Sentence a, Model model)
+        {
+            bool isTrue = true;
+            foreach (ComplexSentence s in _kb)
+            {
+                isTrue = s.Entails(model);
+            }
+            return isTrue;
+        }
 
-        
+
     }
 }

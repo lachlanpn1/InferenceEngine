@@ -65,7 +65,7 @@ namespace InferenceEngine
             return temp;
         }
 
-        public bool Entails(List<String> known)
+        public bool Entails(Model model)
         {
             if(_body is SimpleSentence)
             {
@@ -74,21 +74,21 @@ namespace InferenceEngine
                     switch (_connective)
                     {
                         case Connective.AND:
-                            if((known.Contains(_body.GetSymbols()[0])) && (known.Contains(_head.GetSymbols()[0])))
+                            if((model.Contains(_body.GetSymbols()[0])) && (model.Contains(_head.GetSymbols()[0])))
                             {
                                 return true;
                             }
                             return false;
                         case Connective.OR:
-                            if ((known.Contains(_body.GetSymbols()[0])) || (known.Contains(_head.GetSymbols()[0])))
+                            if ((model.Contains(_body.GetSymbols()[0])) || (model.Contains(_head.GetSymbols()[0])))
                             {
                                 return true;
                             }
                             return false;
                         case Connective.IMPLICATION:
-                            if (known.Contains(_body.GetSymbols()[0]))
+                            if (model.Contains(_body.GetSymbols()[0]))
                             {
-                                known.Add(_head.GetSymbols()[0]);
+                                model.Add(_head.GetSymbols()[0]);
                             }
                             break;
                         default:
@@ -96,7 +96,7 @@ namespace InferenceEngine
                             break;
                     }
                 }
-                if (((ComplexSentence)_head).Entails(known))
+                if (((ComplexSentence)_head).Entails(model))
                 {
                     return true;
                 } else
@@ -104,7 +104,7 @@ namespace InferenceEngine
                     return false;
                 }
             }
-            if (((ComplexSentence)_body).Entails(known))
+            if (((ComplexSentence)_body).Entails(model))
             {
                 return true;
             } else
