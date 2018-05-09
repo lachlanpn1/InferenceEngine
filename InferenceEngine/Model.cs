@@ -9,12 +9,8 @@ namespace InferenceEngine
     class Model
     {
         Dictionary<string, bool> _model = new Dictionary<string, bool>();
-        public Model(List<String> currentlyTrue)
+        public Model()
         {
-            //foreach(string s in currentlyTrue)
-            //{
-            //    _model.Add(s, true);
-            //}
         }
 
         public Dictionary<string, bool> getModel
@@ -32,7 +28,10 @@ namespace InferenceEngine
         public Model Extend(string proposition, bool value)
         {
             Model temp = this;
-            temp.getModel.Add(proposition, value);
+            if(!_model.ContainsKey(proposition))
+            {
+                temp.getModel.Add(proposition, value);
+            }
             return temp;
         }
 

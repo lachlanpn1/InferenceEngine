@@ -73,7 +73,7 @@ namespace InferenceEngine
             }
             return currentlyTrue;
         }
-
+        
         public static bool CheckAll(Model model)
         {
             bool isTrue = true;
@@ -83,6 +83,10 @@ namespace InferenceEngine
                 {
                     isTrue = ((ComplexSentence)s).Entails(model);
                 }
+                if(s is SimpleSentence)
+                {
+                    isTrue = model.Contains(((SimpleSentence)s).GetSymbols()[0]);
+                }
 
             }
             return isTrue;
@@ -91,13 +95,12 @@ namespace InferenceEngine
         public static bool CheckAll(Sentence a, Model model)
         {
             bool isTrue = true;
-            foreach (Sentence s in _kb)
+            if(a is ComplexSentence)
             {
-                if (s is ComplexSentence)
-                {
-                    isTrue = ((ComplexSentence)s).Entails(model);
-                }
-
+                isTrue = ((ComplexSentence)a).Entails(model);
+            } else if (a is SimpleSentence)
+            {
+                isTrue = model.Contains(((SimpleSentence)a).GetSymbols()[0]);
             }
             return isTrue;
         }

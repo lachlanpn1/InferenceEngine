@@ -9,6 +9,7 @@ namespace InferenceEngine
     class TruthTableChecking : Algorithm
     {
         int count = 0;
+        int debugLoopCount = 0;
 
         public TruthTableChecking(string stringquery)
         {
@@ -20,31 +21,31 @@ namespace InferenceEngine
 
         public override string Result()
         {
-            return Count.ToString();
+            return Count.ToString() + " " + debugLoopCount.ToString();
         }
 
-        private bool Entails(Sentence a)
+        private int Entails(Sentence a)
         {
             List<String> symbols = KnowledgeBase.Symbols;
-            Model model = new Model(KnowledgeBase.currentlyTrue());
+            Model model = new Model();
             symbols.AddRange(a.GetSymbols());
-            return CheckAll(a, symbols, model);
+            CheckAll(a, symbols, model);
+            return count;
         }
 
-        private bool CheckAll(Sentence a, List<String> symbols, Model model)
+        private void CheckAll(Sentence a, List<String> symbols, Model model)
         {
+            debugLoopCount++;
             String p;
             List<String> rest = new List<string>();
             if (symbols.Count < 1)
             {
                 if (PLTRUE(model))
                 {
-                    return PLTRUE(model, a);
-                }
-
-                else
-                {
-                    return true;
+                    if (PLTRUE(model, a))
+                    {
+                        count++;
+                    }
                 }
             }
 
@@ -54,7 +55,8 @@ namespace InferenceEngine
                 rest = symbols;
                 rest.Remove(symbols.First());
 
-                return ((CheckAll(a, rest, model.Extend(p, true))) && (CheckAll(a, rest, model.Extend(p, false))));
+                CheckAll(a, rest, model.Extend(p, true)); 
+                CheckAll(a, rest, model.Extend(p, false));
             }
         }
 
@@ -64,7 +66,6 @@ namespace InferenceEngine
             {
                 if (KnowledgeBase.CheckAll(a, model))
                 {
-                    Count++;
                     return true;
                 } 
             }

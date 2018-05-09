@@ -62,7 +62,7 @@ namespace InferenceEngine
                     symbols.Add(s);
                 }
             }
-            return temp;
+            return symbols;
         }
 
         public bool Entails(Model model)
@@ -88,7 +88,11 @@ namespace InferenceEngine
                         case Connective.IMPLICATION:
                             if (model.Contains(_body.GetSymbols()[0]))
                             {
-                                model.Add(_head.GetSymbols()[0]);
+                               if(model.Contains(_head.GetSymbols()[0]))
+                                {
+                                    return true;
+                                }
+                                return false;
                             }
                             break;
                         default:
