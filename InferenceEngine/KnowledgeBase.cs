@@ -61,6 +61,29 @@ namespace InferenceEngine
             return _symbols;
         }
 
+        public static List<String> currentlyTrue()
+        {
+            List<String> currentlyTrue = new List<String>();
+            foreach(Sentence s in _kb)
+            {
+                if(s is SimpleSentence)
+                {
+                    currentlyTrue.Add(s.GetSymbols()[0]);
+                }
+            }
+            return currentlyTrue;
+        }
+
+        public static bool CheckAll(Sentence a, List<String> symbols, List<String> model)
+        {
+            bool isTrue = true;
+            foreach(ComplexSentence s in _kb)
+            {
+                isTrue = s.Entails(model);
+            }
+            return isTrue;
+        }
+
 
         
     }
