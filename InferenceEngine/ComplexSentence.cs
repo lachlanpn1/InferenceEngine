@@ -95,21 +95,28 @@ namespace InferenceEngine
                             // error
                             break;
                     }
+                } else
+                {
+                    if (((ComplexSentence)_head).Entails(model))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                if (((ComplexSentence)_head).Entails(model))
+         
+            } else
+            {
+                if (((ComplexSentence)_body).Entails(model))
                 {
                     return true;
-                } else
+                }
+                else
                 {
                     return false;
                 }
-            }
-            if (((ComplexSentence)_body).Entails(model))
-            {
-                return true;
-            } else
-            {
-                return false;
             }
         }
     }
