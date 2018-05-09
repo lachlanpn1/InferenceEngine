@@ -12,11 +12,11 @@ namespace InferenceEngine
     {
         string[] hornClauses;
         string[] fileText;
+        string query;
 
         public Input(string filename)
         {
             string[] tempFileText;
-
             fileText = File.ReadAllLines(filename);
             tempFileText = fileText;
             //remove spaces from each line
@@ -27,11 +27,13 @@ namespace InferenceEngine
             fileText = tempFileText;
             //required to get rid of the last element, which will be empty
             fileText[1] = tempFileText[1].Remove(tempFileText[1].Length - 1);
-
+            Query = fileText[3];
             hornClauses = Regex
                 .Replace(fileText[1], @"=", "")
                 .Split(';');
         }
+
+        public string Query { get => query; set => query = value; }
 
         public List<Sentence> Convert()
         {

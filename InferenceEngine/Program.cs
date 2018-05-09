@@ -30,22 +30,22 @@ namespace InferenceEngine
             //set the list of sentences in the knowledge base
             KnowledgeBase.KB = inp.Convert();
 
-            //switch (args[0])
-            //{
-            //    case "TT":
-            //        alg = new TruthTableChecking();
-            //        break;
-            //    case "FC":
-            //        alg = new ForwardChaining();
-            //        break;
-            //    case "BC":
-            //        alg = new BackwardChaining();
-            //        break;
-            //    default:
-            //        alg = null;
-            //        break;
-            //}
-            //Console.WriteLine(alg.Result());
+            switch (args[0])
+            {
+                case "TT":
+                    alg = new TruthTableChecking(inp.Query);
+                    break;
+                case "FC":
+                    alg = new ForwardChaining();
+                    break;
+                case "BC":
+                    alg = new BackwardChaining();
+                    break;
+                default:
+                    alg = null;
+                    break;
+            }
+            Console.WriteLine(alg.Result());
 
             //remove from final file, for testing in VS
             Console.ReadLine();

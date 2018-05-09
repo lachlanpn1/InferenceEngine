@@ -118,6 +118,7 @@ namespace InferenceEngine
                     return false;
                 }
             }
+            return false;
         }
     }
 }
