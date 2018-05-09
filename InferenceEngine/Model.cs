@@ -11,10 +11,10 @@ namespace InferenceEngine
         Dictionary<string, bool> _model = new Dictionary<string, bool>();
         public Model(List<String> currentlyTrue)
         {
-            foreach(string s in currentlyTrue)
-            {
-                _model.Add(s, true);
-            }
+            //foreach(string s in currentlyTrue)
+            //{
+            //    _model.Add(s, true);
+            //}
         }
 
         public Dictionary<string, bool> getModel
