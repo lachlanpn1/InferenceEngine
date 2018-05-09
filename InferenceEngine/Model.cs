@@ -50,7 +50,10 @@ namespace InferenceEngine
         
         public void Add(string proposition)
         {
-            _model.Add(proposition, true);
+            if(!_model.ContainsKey(proposition))
+            {
+                _model.Add(proposition, true);
+            }
         }
     }
 }
