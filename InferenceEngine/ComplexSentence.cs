@@ -17,7 +17,7 @@ namespace InferenceEngine
             _connective = connective;
         }
 
-        Sentence Head
+        public Sentence Head
         {
             get
             {
@@ -25,7 +25,7 @@ namespace InferenceEngine
             }
         }
 
-        Sentence Body
+        public Sentence Body
         {
             get
             {
@@ -33,7 +33,7 @@ namespace InferenceEngine
             }
         }
 
-        Connective Connective
+        public Connective Connective
         {
             get
             {
@@ -63,6 +63,54 @@ namespace InferenceEngine
                 }
             }
             return temp;
+        }
+
+        public bool Entails(List<String> known)
+        {
+            if(_body is SimpleSentence)
+            {
+                if(_head is SimpleSentence)
+                {
+                    switch (_connective)
+                    {
+                        case Connective.AND:
+                            if((known.Contains(_body.GetSymbols()[0])) && (known.Contains(_head.GetSymbols()[0])))
+                            {
+                                return true;
+                            }
+                            return false;
+                        case Connective.OR:
+                            if ((known.Contains(_body.GetSymbols()[0])) || (known.Contains(_head.GetSymbols()[0])))
+                            {
+                                return true;
+                            }
+                            return false;
+                        case Connective.IMPLICATION:
+                            if (known.Contains(_body.GetSymbols()[0]))
+                            {
+                                known.Add(_head.GetSymbols()[0]);
+                            }
+                            break;
+                        default:
+                            // error
+                            break;
+                    }
+                }
+                if (((ComplexSentence)_head).Entails(known))
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            }
+            if (((ComplexSentence)_body).Entails(known))
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
         }
     }
 }
