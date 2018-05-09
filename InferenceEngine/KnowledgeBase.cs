@@ -91,9 +91,13 @@ namespace InferenceEngine
         public static bool CheckAll(Sentence a, Model model)
         {
             bool isTrue = true;
-            foreach (ComplexSentence s in _kb)
+            foreach (Sentence s in _kb)
             {
-                isTrue = s.Entails(model);
+                if (s is ComplexSentence)
+                {
+                    isTrue = ((ComplexSentence)s).Entails(model);
+                }
+
             }
             return isTrue;
         }
