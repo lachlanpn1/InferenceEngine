@@ -28,9 +28,15 @@ namespace InferenceEngine
         public Model Extend(string proposition, bool value)
         {
             Model temp = this;
-            if(!_model.ContainsKey(proposition))
+            if (!_model.ContainsKey(proposition))
             {
                 temp.getModel.Add(proposition, value);
+            } else
+            {
+                if (value != _model[proposition])
+                {
+                    _model[proposition] = value;
+                }
             }
             return temp;
         }
