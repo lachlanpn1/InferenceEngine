@@ -28,12 +28,13 @@ namespace InferenceEngine
         {
             List<String> symbols = KnowledgeBase.Symbols;
             Model model = new Model();
-            symbols.AddRange(a.GetSymbols());
+
+            symbols = AddQuery(symbols, a);
             CheckAll(a, symbols, model);
             return count;
         }
 
-        private void CheckAll(Sentence a, List<String> symbols, Model model)
+        private bool CheckAll(Sentence a, List<String> symbols, Model model)
         {
             debugLoopCount++;
             String p;
@@ -45,7 +46,14 @@ namespace InferenceEngine
                     if (PLTRUE(model, a))
                     {
                         count++;
+                        return true; 
                     }
+                    return false;
+                }
+
+                else
+                {
+                    return true;
                 }
             }
 
@@ -55,8 +63,9 @@ namespace InferenceEngine
                 rest = symbols;
                 rest.Remove(symbols.First());
 
-                CheckAll(a, rest, model.Extend(p, true)); 
+                CheckAll(a, rest, model.Extend(p, true));
                 CheckAll(a, rest, model.Extend(p, false));
+                return true;
             }
         }
 
@@ -79,7 +88,24 @@ namespace InferenceEngine
 
         private bool PLTRUE(Model model)
         {
-            return KnowledgeBase.CheckAll(model);
+            if (KnowledgeBase.CheckAll(model))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private List<String> AddQuery(List<string> symbols, Sentence a)
+        {
+            List<string> result = symbols;
+            foreach (string s in a.GetSymbols())
+            {
+                if (!result.Contains(s))
+                {
+                    result.Add(s);
+                }
+            }
+            return result;
         }
     }
 }
