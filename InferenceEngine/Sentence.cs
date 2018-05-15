@@ -25,6 +25,8 @@ namespace InferenceEngine
             }
         }
 
+        public abstract bool Entails(Model m);
+
         public abstract List<String> GetSymbols();
     }
 }

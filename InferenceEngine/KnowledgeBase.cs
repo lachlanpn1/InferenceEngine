@@ -15,17 +15,23 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    static class KnowledgeBase
+     class KnowledgeBase
     {
-        static List<Sentence> _kb = new List<Sentence>();
-        static List<string> _symbols = new List<string>();
-        public static void Add(List<Sentence> sentences)
+        List<Sentence> _kb = new List<Sentence>();
+        Sentence s;
+        List<string> _symbols = new List<string>();
+
+        public KnowledgeBase()
+        {
+        }
+
+        public void Add(List<Sentence> sentences)
         {
             _kb = sentences;
             Console.WriteLine("b");
         }
 
-        public static List<Sentence> KB
+        public List<Sentence> KB
         {
             get
             {
@@ -37,15 +43,19 @@ namespace InferenceEngine
             }
         }
 
-        public static List<string> Symbols
+        public Sentence Sentence
         {
             get
             {
-                return getSymbols();
+                return s;
+            }
+            set
+            {
+                s = value;
             }
         }
 
-        private static List<string> getSymbols()
+        public List<string> GetSymbols()
         {
             foreach(Sentence s in _kb)
             {
@@ -61,7 +71,7 @@ namespace InferenceEngine
             return _symbols;
         }
 
-        public static List<String> currentlyTrue()
+        public List<String> currentlyTrue()
         {
             List<String> currentlyTrue = new List<String>();
             foreach(Sentence s in _kb)
@@ -74,7 +84,7 @@ namespace InferenceEngine
             return currentlyTrue;
         }
         
-        public static bool CheckAll(Model model)
+        public bool CheckAll(Model model)
         {
             bool isTrue = true;
             foreach(Sentence s in _kb)
@@ -85,14 +95,29 @@ namespace InferenceEngine
                 }
                 if(s is SimpleSentence)
                 {
-                    isTrue = model.Contains(((SimpleSentence)s).GetSymbols()[0]);
+                    // do not check
+                    //isTrue = model.Contains(((SimpleSentence)s).GetSymbols()[0]);
                 }
 
             }
             return isTrue;
         }
 
-        public static bool CheckAll(Sentence a, Model model)
+        public bool Entails(Model model)
+        {
+            bool value = true;
+            foreach(Sentence s in _kb)
+            {
+                if(value)
+                {
+                    if (s is ComplexSentence) value = s.Entails(model);
+                    if (s is SimpleSentence) value = s.Entails(model);
+                }
+            }
+            return value;   
+        }
+
+        public bool CheckAll(Sentence a, Model model)
         {
             bool isTrue = true;
             if(a is ComplexSentence)
@@ -100,11 +125,30 @@ namespace InferenceEngine
                 isTrue = ((ComplexSentence)a).Entails(model);
             } else if (a is SimpleSentence)
             {
-                isTrue = model.Contains(((SimpleSentence)a).GetSymbols()[0]);
+                // do not check
+                //isTrue = model.Contains(((SimpleSentence)a).GetSymbols()[0]);
             }
             return isTrue;
         }
 
-
+        public Sentence ConcatenateSentences()
+        {
+            if (_kb.Count > 1)
+            {
+                List<Sentence> temp = _kb;
+                ComplexSentence complex = new ComplexSentence(temp[0], temp[1], false, Connective.AND);
+                temp.RemoveAt(0);
+                temp.RemoveAt(0);
+                while (temp.Count - 1 != 0)
+                {
+                    complex = new ComplexSentence(complex, temp[0], false, Connective.AND);
+                    temp.RemoveAt(0);
+                }
+                return complex;
+            } else
+            {
+                return _kb[0];
+            }
+        }
     }
 }

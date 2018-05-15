@@ -65,7 +65,7 @@ namespace InferenceEngine
             return symbols;
         }
 
-        public bool Entails(Model model)
+        public override bool Entails(Model model)
         {
             if(_body is SimpleSentence)
             {
@@ -74,25 +74,41 @@ namespace InferenceEngine
                     switch (_connective)
                     {
                         case Connective.AND:
-                            if((model.Contains(_body.GetSymbols()[0])) && (model.Contains(_head.GetSymbols()[0])))
+                            if((model.ContainsPositive(_body.GetSymbols()[0])) && (model.ContainsPositive(_head.GetSymbols()[0])))
                             {
                                 return true;
                             }
                             return false;
                         case Connective.OR:
-                            if ((model.Contains(_body.GetSymbols()[0])) || (model.Contains(_head.GetSymbols()[0])))
+                            if ((model.ContainsPositive(_body.GetSymbols()[0])) || (model.ContainsPositive(_head.GetSymbols()[0])))
                             {
                                 return true;
                             }
                             return false;
                         case Connective.IMPLICATION:
-                            if (model.Contains(_body.GetSymbols()[0]))
+                            // BODY => HEAD
+                            // Body Head Body=>Head
+                            //  1     1     1
+                            //  0     1     1
+                            //  0     0     1
+                            //  1     0     0
+                            if (model.ContainsPositive(_body.GetSymbols()[0]))
                             {
-                               if(model.Contains(_head.GetSymbols()[0]))
+                               if (_body.GetSymbols()[0] == "c")
+                                {
+                                    if (true) ;
+                                }
+                               if(model.ContainsPositive(_head.GetSymbols()[0]))
                                 {
                                     return true;
                                 }
                                 return false;
+                            } else
+                            {
+                                if(model.ContainsPositive(_head.GetSymbols()[0]))
+                                {
+                                    return true;
+                                }
                             }
                             break;
                         default:

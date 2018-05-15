@@ -12,7 +12,7 @@ namespace InferenceEngine
         static void Main(string[] args)
         {
             Algorithm alg;
-            
+            KnowledgeBase _kb = new KnowledgeBase();
 
             Input inp = new Input(args[1]);
             if (args.Length == 2)
@@ -28,12 +28,12 @@ namespace InferenceEngine
             }
 
             //set the list of sentences in the knowledge base
-            KnowledgeBase.KB = inp.Convert();
+            _kb.KB = inp.Convert();
 
             switch (args[0])
             {
                 case "TT":
-                    alg = new TruthTableChecking(inp.Query);
+                    alg = new TruthTableChecking(inp.Query, _kb);
                     break;
                 case "FC":
                     alg = new ForwardChaining();

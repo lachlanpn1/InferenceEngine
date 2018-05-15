@@ -6,11 +6,19 @@ using System.Threading.Tasks;
 
 namespace InferenceEngine
 {
-    class Model
+    public class Model
     {
-        Dictionary<string, bool> _model = new Dictionary<string, bool>();
+        private Dictionary<string, bool> _model = new Dictionary<string, bool>();
         public Model()
         {
+        }
+
+        public Model(Model m)
+        {
+            foreach (KeyValuePair<string, bool> proposition in m.getModel)
+            {
+                _model.Add(proposition.Key, proposition.Value);
+            }
         }
 
         public Dictionary<string, bool> getModel
@@ -25,23 +33,16 @@ namespace InferenceEngine
             }
         }
 
-        public Model Extend(string proposition, bool value)
+        public bool Contains(string proposition)
         {
-            Model temp = this;
-            if (!_model.ContainsKey(proposition))
+            if (_model.ContainsKey(proposition))
             {
-                temp.getModel.Add(proposition, value);
-            } else
-            {
-                if (value != _model[proposition])
-                {
-                    _model[proposition] = value;
-                }
+                return true;
             }
-            return temp;
+            return false;
         }
 
-        public bool Contains(string proposition)
+        public bool ContainsPositive(string proposition)
         {
             if (_model.ContainsKey(proposition))
             {
@@ -53,11 +54,11 @@ namespace InferenceEngine
             return false;
         }
         
-        public void Add(string proposition)
+        public void Add(string proposition, bool value)
         {
             if(!_model.ContainsKey(proposition))
             {
-                _model.Add(proposition, true);
+                _model.Add(proposition, value);
             }
         }
     }

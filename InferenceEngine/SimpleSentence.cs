@@ -20,5 +20,10 @@ namespace InferenceEngine
             return temp;
         }
 
+        public override bool Entails(Model m)
+        {
+            return m.ContainsPositive(_symbol);
+        }
+
     }
 }
