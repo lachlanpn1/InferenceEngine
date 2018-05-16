@@ -4,7 +4,7 @@ using System.Text;
 
 namespace InferenceEngine
 {
-    class SimpleSentence : Sentence
+    public class SimpleSentence : Sentence
     {
         string _symbol;
 
