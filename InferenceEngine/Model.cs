@@ -80,6 +80,19 @@ namespace InferenceEngine
         {
             _model[p.GetSymbols()[0]] = false;
         }
+
+        public string getString()
+        {
+            string temp = "";
+
+            foreach (KeyValuePair<string, bool> proposition in _model)
+            {
+                temp += proposition.Key + ",";
+                temp = temp.TrimEnd(',');
+                // do something with entry.Value or entry.Key
+            }
+            return temp;
+        }
         
     }
 }
