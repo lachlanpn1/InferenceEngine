@@ -168,46 +168,58 @@ namespace InferenceEngine
         public Dictionary<Sentence, int> getCount()
         {
             Dictionary<Sentence, int> temp = new Dictionary<Sentence, int>();
-            List<string> added = new List<string>();
+            Dictionary<string, int> added = new Dictionary<string, int>();
 
             foreach(Sentence s in _kb)
             {
                 if(s is SimpleSentence)
                 {
-                    if (!added.Contains(s.GetSymbols()[0]))
+                    if (!added.ContainsKey(s.SymbolsAsSentence()))
                     {
                         temp.Add(s, 0);
-                        added.Add(s.SymbolsAsSentence());
+                        added.Add(s.SymbolsAsSentence(),0);
+                    } else
+                    {
+                        added[s.SymbolsAsSentence()]++;
                     }
                 }
                 if(s is ComplexSentence)
                 {
                     Sentence head = s.Head();
                     Sentence body = ((ComplexSentence)s).Body;
-                    if (!added.Contains(head.SymbolsAsSentence()))
+                    if (!added.ContainsKey(head.SymbolsAsSentence()))
                     {
                     temp.Add(head, 0);
-                    added.Add(head.SymbolsAsSentence());
+                    added.Add(head.SymbolsAsSentence(),0);
+                    } 
+                    else
+                    {
+                        added[s.SymbolsAsSentence()]++;
                     }
-                    if(!added.Contains(body.SymbolsAsSentence()))
+                    if(!added.ContainsKey(body.SymbolsAsSentence()))
                     {
                     temp.Add(body, 0);
-                    added.Add(body.SymbolsAsSentence());
+                    added.Add(body.SymbolsAsSentence(),0);
+                    } 
+                    else
+                    {
+                        added[s.SymbolsAsSentence()]++;
                     }
                     
                 }
             }
 
-            foreach (Sentence s in _kb)
+            foreach(Sentence s in _kb)
             {
-                if(s is ComplexSentence)
+                if (s is SimpleSentence)
                 {
-                    temp[s.Head()]++;
-                    temp[((ComplexSentence)s).Body]++;
-                }
-                if(s is SimpleSentence)
+                    added[s.SymbolsAsSentence()]++;
+                } else
                 {
-                    temp[s.Head()]++;
+                    string body = ((ComplexSentence)s).Body.SymbolsAsSentence();
+                    added[body]++;
+                    string head = ((ComplexSentence)s).Head().SymbolsAsSentence();
+                    added[head]++;
                 }
             }
             return temp;
