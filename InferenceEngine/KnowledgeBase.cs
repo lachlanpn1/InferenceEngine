@@ -171,22 +171,43 @@ namespace InferenceEngine
 
             foreach(Sentence s in _kb)
             {
-                temp.Add(s, 0);
+                if(s is SimpleSentence)
+                {
+                    if(!temp.ContainsKey(s))
+                    {
+                        temp.Add(s, 0);
+                    }
+                }
+                if(s is ComplexSentence)
+                {
+                    Sentence head = s.Head();
+                    Sentence body = ((ComplexSentence)s).Body;
+                    if(!temp.ContainsKey(head))
+                    {
+                    temp.Add(head, 0);
+
+                    }
+                    if(!temp.ContainsKey(body))
+                    {
+                    temp.Add(body, 0);
+                    }
+                    
+                }
             }
 
             foreach (Sentence s in _kb)
             {
                 if(s is ComplexSentence)
                 {
-                    temp[(Sentence)s.Head()]++;
-                    temp[(Sentence)((ComplexSentence)s).Body]++;
+                    temp[s.Head()]++;
+                    temp[((ComplexSentence)s).Body]++;
                 }
                 if(s is SimpleSentence)
                 {
-                    temp[(Sentence)s.Head()]++;
+                    temp[s.Head()]++;
                 }
             }
-            return temp;
+            return 
         }
     }
 }
