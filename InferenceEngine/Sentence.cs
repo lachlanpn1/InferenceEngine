@@ -34,6 +34,7 @@ namespace InferenceEngine
 
         public abstract List<String> GetSymbols();
 
+        public abstract string SymbolsAsSentence();
         public abstract SimpleSentence getHead();
     }
 }

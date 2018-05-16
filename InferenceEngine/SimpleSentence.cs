@@ -30,5 +30,10 @@ namespace InferenceEngine
             return this;
         }
 
+        public override string SymbolsAsSentence()
+        {
+            return _symbol;
+        }
+
     }
 }

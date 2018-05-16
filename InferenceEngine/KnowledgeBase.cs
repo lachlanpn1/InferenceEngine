@@ -168,28 +168,31 @@ namespace InferenceEngine
         public Dictionary<Sentence, int> getCount()
         {
             Dictionary<Sentence, int> temp = new Dictionary<Sentence, int>();
+            List<string> added = new List<string>();
 
             foreach(Sentence s in _kb)
             {
                 if(s is SimpleSentence)
                 {
-                    if(!temp.ContainsKey(s))
+                    if (!added.Contains(s.GetSymbols()[0]))
                     {
                         temp.Add(s, 0);
+                        added.Add(s.SymbolsAsSentence());
                     }
                 }
                 if(s is ComplexSentence)
                 {
                     Sentence head = s.Head();
                     Sentence body = ((ComplexSentence)s).Body;
-                    if(!temp.ContainsKey(head))
+                    if (!added.Contains(head.SymbolsAsSentence()))
                     {
                     temp.Add(head, 0);
-
+                    added.Add(head.SymbolsAsSentence());
                     }
-                    if(!temp.ContainsKey(body))
+                    if(!added.Contains(body.SymbolsAsSentence()))
                     {
                     temp.Add(body, 0);
+                    added.Add(body.SymbolsAsSentence());
                     }
                     
                 }

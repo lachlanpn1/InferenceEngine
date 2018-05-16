@@ -39,6 +39,17 @@ namespace InferenceEngine
             }
         }
 
+        public override string SymbolsAsSentence()
+        {
+            List<String> temp = GetSymbols();
+            String result = "";
+            foreach(string s in temp)
+            {
+                result += s;
+            }
+            return result;
+        }
+
         public override List<String> GetSymbols()
         {
             List<String> symbols = new List<String>();
