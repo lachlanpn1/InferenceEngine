@@ -67,14 +67,14 @@ namespace InferenceEngine
 
         public override bool Entails(Model model)
         {
-            if(_body is SimpleSentence)
+           if(_body is SimpleSentence)
             {
                 if(_head is SimpleSentence)
                 {
-                    switch (_connective)
+                    switch(_connective)
                     {
                         case Connective.AND:
-                            if((model.ContainsPositive(_body.GetSymbols()[0])) && (model.ContainsPositive(_head.GetSymbols()[0])))
+                            if ((model.ContainsPositive(_body.GetSymbols()[0])) && (model.ContainsPositive(_head.GetSymbols()[0])))
                             {
                                 return true;
                             }
@@ -92,53 +92,59 @@ namespace InferenceEngine
                             //  0     1     1
                             //  0     0     1
                             //  1     0     0
-                            if (model.ContainsPositive(_body.GetSymbols()[0]))
+                            if (_body.Entails(model))
                             {
-                               if (_body.GetSymbols()[0] == "c")
+                                if (!_head.Entails(model))
                                 {
-                                    if (true) ;
-                                }
-                               if(model.ContainsPositive(_head.GetSymbols()[0]))
-                                {
-                                    return true;
-                                }
-                                return false;
-                            } else
-                            {
-                                if(model.ContainsPositive(_head.GetSymbols()[0]))
-                                {
-                                    return true;
+                                    return false;
                                 }
                             }
-                            break;
+                            return true;
                         default:
                             // error
                             break;
                     }
                 } else
                 {
-                    if (((ComplexSentence)_head).Entails(model))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    // break
                 }
-         
             } else
             {
-                if (((ComplexSentence)_body).Entails(model))
+                // body is a complex sentence
+                // such as A&B=>C or A|B=>C
+                switch (_connective)
                 {
-                    return true;
-                }
-                else
-                {
-                    return false;
+                    case Connective.AND:
+                        if (_body.Entails(model))
+                        {
+                            if (_head.Entails(model))
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    case Connective.OR:
+                        if ((_body.Entails(model)) || (_head.Entails(model)))
+                        {
+                            return true;
+                        }
+                        return false;
+                    case Connective.IMPLICATION:
+                        if (_body.Entails(model))
+                        {
+                            if(!_head.Entails(model))
+                            {
+                                return false;
+                            }
+                        }
+                        return true;
+                    default:
+                        break;
+
                 }
             }
             return false;
+
         }
     }
 }
