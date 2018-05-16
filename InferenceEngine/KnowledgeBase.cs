@@ -207,7 +207,7 @@ namespace InferenceEngine
                     temp[s.Head()]++;
                 }
             }
-            return 
+            return temp;
         }
     }
 }
