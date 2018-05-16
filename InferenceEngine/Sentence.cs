@@ -12,6 +12,11 @@ namespace InferenceEngine
         {
             _isFalse = isFalse;
         }
+
+        public SimpleSentence Head()
+        {
+            return getHead();
+        }
   
         public bool isFalse
         {
@@ -28,5 +33,7 @@ namespace InferenceEngine
         public abstract bool Entails(Model m);
 
         public abstract List<String> GetSymbols();
+
+        public abstract SimpleSentence getHead();
     }
 }

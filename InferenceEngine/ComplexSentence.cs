@@ -7,10 +7,10 @@ namespace InferenceEngine
     class ComplexSentence : Sentence
     {
         Sentence _body;
-        Sentence _head;
+        SimpleSentence _head;
         Connective _connective;
 
-        public ComplexSentence(Sentence body, Sentence head, bool isFalse, Connective connective) : base(isFalse)
+        public ComplexSentence(Sentence body, SimpleSentence head, bool isFalse, Connective connective) : base(isFalse)
         {
             _body = body;
             _head = head;
@@ -25,12 +25,9 @@ namespace InferenceEngine
             }
         }
 
-        public Sentence Head
+        public override SimpleSentence getHead()
         {
-           get
-            {
-                return _head;
-            }
+            return _head;
             
         }
 
@@ -47,7 +44,7 @@ namespace InferenceEngine
             List<String> symbols = new List<String>();
             List<String> temp;
             // get symbols within head and body
-            temp = Head.GetSymbols();
+            temp = Head().GetSymbols();
             foreach(string s in temp)
             {
                 if (!symbols.Contains(s))

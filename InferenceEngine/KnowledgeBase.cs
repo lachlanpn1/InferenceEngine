@@ -136,12 +136,12 @@ namespace InferenceEngine
             if (_kb.Count > 1)
             {
                 List<Sentence> temp = _kb;
-                ComplexSentence complex = new ComplexSentence(temp[0], temp[1], false, Connective.AND);
+                ComplexSentence complex = new ComplexSentence(temp[0], (SimpleSentence)temp[1], false, Connective.AND);
                 temp.RemoveAt(0);
                 temp.RemoveAt(0);
                 while (temp.Count - 1 != 0)
                 {
-                    complex = new ComplexSentence(complex, temp[0], false, Connective.AND);
+                    complex = new ComplexSentence(complex, (SimpleSentence)temp[0], false, Connective.AND);
                     temp.RemoveAt(0);
                 }
                 return complex;
