@@ -71,14 +71,14 @@ namespace InferenceEngine
             return _symbols;
         }
 
-        public List<String> currentlyTrue()
+        public List<SimpleSentence> currentlyTrue()
         {
-            List<String> currentlyTrue = new List<String>();
+            List<SimpleSentence> currentlyTrue = new List<SimpleSentence>();
             foreach(Sentence s in _kb)
             {
                 if(s is SimpleSentence)
                 {
-                    currentlyTrue.Add(s.GetSymbols()[0]);
+                    if (s.isFalse == false) currentlyTrue.Add(((SimpleSentence)s));
                 }
             }
             return currentlyTrue;
