@@ -61,6 +61,12 @@ namespace InferenceEngine
             }
             return false;
         }
+
+        public bool ContainsPositive(SimpleSentence s)
+        {
+            string proposition = s.GetSymbols()[0];
+            return ContainsPositive(s);
+        }
         
         public void Add(string proposition, bool value)
         {

@@ -25,7 +25,7 @@ namespace InferenceEngine
             return m.ContainsPositive(_symbol);
         }
 
-        public override Sentence Head()
+        public SimpleSentence Head()
         {
             return this;
         }
