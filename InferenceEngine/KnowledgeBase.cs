@@ -164,5 +164,29 @@ namespace InferenceEngine
             return temp;
 
         }
+
+        public Dictionary<Sentence, int> getCount()
+        {
+            Dictionary<Sentence, int> temp = new Dictionary<Sentence, int>();
+
+            foreach(Sentence s in _kb)
+            {
+                temp.Add(s, 0);
+            }
+
+            foreach (Sentence s in _kb)
+            {
+                if(s is ComplexSentence)
+                {
+                    temp[s.Head()]++;
+                    temp[((ComplexSentence)s).Body]++;
+                }
+                if(s is SimpleSentence)
+                {
+                    temp[s.Head()]++;
+                }
+            }
+            return temp;
+        }
     }
 }
