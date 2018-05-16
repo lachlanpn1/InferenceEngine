@@ -70,6 +70,10 @@ namespace InferenceEngine
             }
         }
 
+        public void setTrue(SimpleSentence p)
+        {
+            _model[p.GetSymbols()[0]] = false;
+        }
         
     }
 }
