@@ -156,7 +156,7 @@ namespace InferenceEngine
             List<Sentence> temp = new List<Sentence>();
             foreach(Sentence s in _kb)
             {
-                if(s.GetSymbols().Contains(p))
+                if(s.GetSymbols().Contains(p.GetSymbols()[0]))
                 {
                     temp.Add(s);
                 }
