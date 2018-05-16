@@ -178,12 +178,12 @@ namespace InferenceEngine
             {
                 if(s is ComplexSentence)
                 {
-                    temp[s.Head()]++;
-                    temp[((ComplexSentence)s).Body]++;
+                    temp[(Sentence)s.Head()]++;
+                    temp[(Sentence)((ComplexSentence)s).Body]++;
                 }
                 if(s is SimpleSentence)
                 {
-                    temp[s.Head()]++;
+                    temp[(Sentence)s.Head()]++;
                 }
             }
             return temp;
