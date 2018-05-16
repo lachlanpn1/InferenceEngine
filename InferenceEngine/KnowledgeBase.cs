@@ -150,5 +150,19 @@ namespace InferenceEngine
                 return _kb[0];
             }
         }
+
+        public List<Sentence> getSentencesWith(SimpleSentence p)
+        {
+            List<Sentence> temp = new List<Sentence>();
+            foreach(Sentence s in _kb)
+            {
+                if(s.GetSymbols().Contains(p))
+                {
+                    temp.Add(s);
+                }
+            }
+            return temp;
+
+        }
     }
 }
