@@ -7,13 +7,25 @@ namespace InferenceEngine
     public abstract class Sentence
     {
         bool _isFalse;
+        protected Sentence _head;
 
         public Sentence(bool isFalse)
         {
             _isFalse = isFalse;
         }
 
-        bool isFalse
+        public Sentence(bool isFalse, Sentence head)
+        {
+            _isFalse = isFalse;
+            _head = head;
+        }
+
+        public virtual Sentence Head()
+        {
+            return _head;
+        }
+
+        public bool isFalse
         {
             get
             {

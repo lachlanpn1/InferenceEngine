@@ -6,23 +6,13 @@ namespace InferenceEngine
 {
     class ComplexSentence : Sentence
     {
-        Sentence _head;
         Sentence _body;
         Connective _connective;
 
-        public ComplexSentence(Sentence body, Sentence head, bool isFalse, Connective connective) : base(isFalse)
+        public ComplexSentence(Sentence body, Sentence head, bool isFalse, Connective connective) : base(isFalse, head)
         {
-            _head = head;
             _body = body;
             _connective = connective;
-        }
-
-        public Sentence Head
-        {
-            get
-            {
-                return _head;
-            }
         }
 
         public Sentence Body
@@ -46,7 +36,7 @@ namespace InferenceEngine
             List<String> symbols = new List<String>();
             List<String> temp;
             // get symbols within head and body
-            temp = Head.GetSymbols();
+            temp = Head().GetSymbols();
             foreach(string s in temp)
             {
                 if (!symbols.Contains(s))
