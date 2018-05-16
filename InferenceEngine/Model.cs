@@ -21,6 +21,14 @@ namespace InferenceEngine
             }
         }
 
+        public Model(List<String> symbol, bool value)
+        {
+            foreach(string s in symbol)
+            {
+                Add(s, false);
+            }
+        }
+
         public Dictionary<string, bool> getModel
         {
             get
@@ -61,5 +69,7 @@ namespace InferenceEngine
                 _model.Add(proposition, value);
             }
         }
+
+        
     }
 }
