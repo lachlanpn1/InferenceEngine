@@ -46,9 +46,6 @@ namespace InferenceEngine
                     break;
             }
             Console.WriteLine(alg.Result());
-
-            //remove from final file, for testing in VS
-            Console.ReadLine();
         }
     }
 }

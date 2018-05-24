@@ -30,8 +30,10 @@ namespace InferenceEngine
                 temp += "YES: ";
                 for(int i = mustBeTrue.Count - 1; i > -1 ; i--)
                 {
-                    temp += (mustBeTrue[i].GetSymbols()[0]) + " ";
+                    temp += (mustBeTrue[i].GetSymbols()[0]) + ", ";
                 }
+                temp = temp.TrimEnd(' ');
+                temp = temp.TrimEnd(',');
             }
             else
             { 
