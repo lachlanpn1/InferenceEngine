@@ -44,6 +44,7 @@ namespace InferenceEngine
 
         public bool PL_BC_ENTAILS(KnowledgeBase KB, SimpleSentence q)
         {
+            bool found = false;
             Queue<SimpleSentence> agenda = new Queue<SimpleSentence>();
             agenda.Enqueue(q);
             while (agenda.Count > 0)
@@ -60,11 +61,16 @@ namespace InferenceEngine
                 }
                 if (isAllTrue(agenda, facts))
                 {
-                    return true;
+                    found = true;
+                    List<SimpleSentence> temp = KB.getRulesWith(q);
+                    foreach(SimpleSentence s in temp)
+                    {
+                        if (!mustBeTrue.Contains(s)) mustBeTrue.Add(s);
+                    }
                 }
 
             }
-            return false;
+            return found;
         }
 
         public bool isAllTrue(Queue<SimpleSentence> agenda, List<SimpleSentence> facts)
@@ -87,6 +93,8 @@ namespace InferenceEngine
             }
             return false;
         }
+
+      
     }
 }
 

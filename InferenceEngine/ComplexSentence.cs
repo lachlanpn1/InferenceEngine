@@ -121,7 +121,15 @@ namespace InferenceEngine
         public List<SimpleSentence> GetAllSimpleSentences()
         {
             List<SimpleSentence> result = new List<SimpleSentence>();
-            if(Body is SimpleSentence)
+            if (Head is ComplexSentence)
+            {
+                result.AddRange(((ComplexSentence)Head).GetAllSimpleSentences());
+            }
+            if (Connective == Connective.AND && Head is SimpleSentence)
+            {
+                result.Add(((SimpleSentence)Head));
+            }
+            if (Body is SimpleSentence) 
             {
                 result.Add((SimpleSentence)Body);
                 return result;
