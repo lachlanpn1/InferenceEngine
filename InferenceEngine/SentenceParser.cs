@@ -78,7 +78,9 @@ namespace InferenceEngine
             // If 2 sentences and 1 connective exist in the respective stacks - a complex sentence can be formed.
             while (sentenceQueue.Count > 1) // if there is more then one sentence then in the sentenceQueue, there MUST be a connective in the connectiveQueue, all simple sentences joined by connectives.
             {
-                SimpleSentence head = (SimpleSentence)sentenceQueue.Pop(); // take the 
+                //Sentence head = sentenceQueue.Pop();
+
+                Sentence head = sentenceQueue.Pop(); // take the 
                 Sentence body = sentenceQueue.Pop();
                 Connective conn = connectiveQueue.Pop();
                 ComplexSentence complex = new ComplexSentence(body, head, (isFalse || bracketNegated), conn);

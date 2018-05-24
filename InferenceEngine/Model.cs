@@ -65,7 +65,7 @@ namespace InferenceEngine
         public bool ContainsPositive(SimpleSentence s)
         {
             string proposition = s.GetSymbols()[0];
-            return ContainsPositive(s);
+            return ContainsPositive(proposition);
         }
         
         public void Add(string proposition, bool value)
@@ -78,7 +78,7 @@ namespace InferenceEngine
 
         public void setTrue(SimpleSentence p)
         {
-            _model[p.GetSymbols()[0]] = false;
+            _model[p.GetSymbols()[0]] = true;
         }
 
         public string getString()
@@ -87,11 +87,32 @@ namespace InferenceEngine
 
             foreach (KeyValuePair<string, bool> proposition in _model)
             {
-                temp += proposition.Key + ",";
-                temp = temp.TrimEnd(',');
-                // do something with entry.Value or entry.Key
+                if (_model[proposition.Key])
+                {
+                    temp += proposition.Key + ", ";
+                    temp = temp.Trim();
+                    temp = temp.TrimEnd(',');
+                }
+               
             }
             return temp;
+        }
+
+        public bool isAllTrue(Queue<SimpleSentence> agenda)
+        {
+            foreach(SimpleSentence s in agenda)
+            {
+                if (_model[s.GetSymbols()[0]] == false) return false;
+            }
+            return true;
+        }
+
+        public void makeTrue(List<SimpleSentence> propositions)
+        {
+            foreach(SimpleSentence p in propositions)
+            {
+                setTrue(p);
+            }
         }
         
     }

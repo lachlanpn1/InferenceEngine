@@ -11,9 +11,7 @@ namespace InferenceEngine
         KnowledgeBase knoBase;
 
         int count = 0;
-        int debugLoopCount = 0;
         List<Model> models = new List<Model>();
-        List<Model> __truemodel__ = new List<Model>();
 
         public TruthTableChecking(string stringquery, KnowledgeBase aKnowledgeBase)
         {
@@ -26,7 +24,8 @@ namespace InferenceEngine
 
         public override string Result()
         {
-            return Count.ToString() + " " + debugLoopCount.ToString();
+            if (count > 0) return "YES: " + count.ToString();
+            return "NO.";
         }
 
         private bool TT_ENTAILS(Sentence a, KnowledgeBase kb)
@@ -40,7 +39,6 @@ namespace InferenceEngine
 
         private bool TT_CHECK_ALL(KnowledgeBase kb, Sentence a, List<String> symbols, Model model)
         {
-            debugLoopCount++;
             if (EMPTY(symbols))
             {
                 if (PL_TRUE(model, kb))
@@ -48,7 +46,6 @@ namespace InferenceEngine
                     if (PL_TRUE(model, a))
                     {
                         count++;
-                        __truemodel__.Add(model);
                         return true;
                     }
                     return false;
@@ -73,8 +70,9 @@ namespace InferenceEngine
 
                 models.Add(true_model);
                 models.Add(false_model);
-                return (TT_CHECK_ALL(kb, a, rest, true_model) &&
-                TT_CHECK_ALL(kb, a, rest, false_model));
+                bool true_check = TT_CHECK_ALL(kb, a, rest, true_model);
+                bool false_check = TT_CHECK_ALL(kb, a, rest, false_model);
+                return (true_check && false_check);
             }
         }
 

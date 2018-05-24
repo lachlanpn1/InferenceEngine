@@ -9,6 +9,7 @@ namespace InferenceEngine
     class ForwardChaining : Algorithm
     {
         Model Inferred;
+        List<SimpleSentence> InferredList = new List<SimpleSentence>(); // for printing result.
         bool result;
         public ForwardChaining(string a, KnowledgeBase kBase)
         {
@@ -23,12 +24,18 @@ namespace InferenceEngine
             string temp = "";
             if (result)
             {
-                temp += ("yes");
-                temp += Inferred.getString();
+                temp += ("YES: ");
+                foreach(SimpleSentence s in InferredList)
+                {
+                    temp += s.GetSymbols()[0];
+                    temp += ", ";
+                }
+                temp = temp.TrimEnd();
+                temp = temp.TrimEnd(',');
             }
             else
             {
-                temp += ("no");
+                temp += ("NO");
             }
             return temp;
         }
@@ -36,25 +43,32 @@ namespace InferenceEngine
         public bool PL_FC_ENTAILS(KnowledgeBase KB, Sentence q)
         {
             Dictionary<Sentence, int> Count = KB.getCount();
-            Stack<SimpleSentence> agenda = new Stack<SimpleSentence>(KB.currentlyTrue());
+            Queue<SimpleSentence> agenda = new Queue<SimpleSentence>(KB.currentlyTrue());
 
             while (agenda.Count > 0)
             {
-                SimpleSentence p = agenda.Pop();
-                if (p == q)
+                SimpleSentence p = agenda.Dequeue();
+                if (!p.isEqual(q))
                 {
                     if (!Inferred.ContainsPositive(p))
                     {
                         Inferred.setTrue(p);
+                        InferredList.Add(p);
                         foreach (Sentence c in KB.getSentencesWith(p))
                         {
-                            Count[c]--;
-                            if (Count[c] == 0)
+                            Count[((ComplexSentence)c).Body]--;
+                            if (Count[((ComplexSentence)c).Body] == 0)
                             {
-                                agenda.Push(c.Head());
+                                agenda.Enqueue(c.getHead());
                             }
                         }
                     }
+                }
+                else
+                {
+                    Inferred.setTrue(p);
+                    InferredList.Add(p);
+                    return true;
                 }
             }
 
@@ -63,21 +77,3 @@ namespace InferenceEngine
 
     }
 }
-
-/*function PL-FC-ENTAILS? (KB, q) returns true or false
-inputs: KB, the knowledge base, a set of proposition(a1 Honl clauses
-q, the query, a proposition symbol
-local variables: count, a table, indexed by clause, initially the number of premises
-inferred, a table, indexed by symbol, each entry initially false
-agenda, a list of symbols, initially the symbols known to be true in KB
-while agenda is not empty do
-p +- P~~(agenda)
-if p = q then return true
-unless inferred[p] do
-inferred[p] + true
-for each Horn clause c in whose premise p appears do
-decrement count [c]
-if count[c] = 0 then
-PUSH(HEAD[~], agenda)
-return false
-*/

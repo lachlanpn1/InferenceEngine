@@ -13,10 +13,7 @@ namespace InferenceEngine
             _isFalse = isFalse;
         }
 
-        public SimpleSentence Head()
-        {
-            return getHead();
-        }
+        public abstract SimpleSentence getHead();
   
         public bool isFalse
         {
@@ -31,10 +28,8 @@ namespace InferenceEngine
         }
 
         public abstract bool Entails(Model m);
-
         public abstract List<String> GetSymbols();
-
-        public abstract string SymbolsAsSentence();
-        public abstract SimpleSentence getHead();
+        public abstract int getCount();
+        public abstract string SymbolsAsString();
     }
 }

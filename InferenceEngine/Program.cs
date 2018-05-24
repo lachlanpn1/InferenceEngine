@@ -39,7 +39,7 @@ namespace InferenceEngine
                     alg = new ForwardChaining(inp.Query, _kb);
                     break;
                 case "BC":
-                    alg = new BackwardChaining();
+                    alg = new BackwardChaining(inp.Query, _kb);
                     break;
                 default:
                     alg = null;

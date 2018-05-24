@@ -8,115 +8,83 @@ namespace InferenceEngine
 {
     class BackwardChaining : Algorithm
     {
-
-        /*       private List<Substition> FOL_BC_ASK(KnowledgeBase KB, Sentence q)
-               {
-                   return FOL_BC_OR(KB, q, new Sentence(false));
-               }
-
-               private List<> FOL_BC_OR(KnowledgeBase KB, Sentence goal, Sentence theta)
-               {
-                   List<Subsitution> result = new List<Subsitution>();
-                   foreach (rule r in KB.fetchRulesByGoal(goal))
-                   {
-                       List<Sentence> temp = STANDARDIZE_VARIABLES(lhs, rhs);
-                       List<Sentence> lhs = temp;
-                       List<Sentence> rhs = temp;
-                       foreach (Sentence s in FOL_BC_AND(KB, lhs, UNIFY(rhs, goal, theta)))
-                       {
-                           result.Add(s);
-                       }
-                   }
-                   return result;
-               }
-
-               private List<> FOL_BC_AND(KnowledgeBase KB, List<Sentence> goals, Sentence theta)
-               {
-                   List<Substitution> result = new List<Substitution>();
-                   if (Failure(theta))
-                   {
-                       return;
-                   }
-                   else if (goals.Count() == 0)
-                   {
-                       return new List<Substitution> { theta };
-                   }
-                   else
-                   {
-                       Sentence first = goals.First();
-                       List<Sentence> rest = goals;
-                       rest.Remove(first);
-
-                       foreach (Sentence s in FOL_BC_OR(KB, (/*subst(theta, first)), theta)
-                       {
-                           foreach (Sentence s2 in FOL_BC_AND(KB, rest, s))
-                           {
-                               result.Add(s2);
-                           }
-                       }
-                   }
-                   return result;
-               }
-
-
-               private ComplexSentence STANDARDIZE_VARIABLES(ComplexSentence rule)
-               {
-
-               }
-
-               private ComplexSentence UNIFY()*/
-        Model Inferred;
+        bool result;
+        List<SimpleSentence> facts;
+        List<SimpleSentence> mustBeTrue;
 
         public BackwardChaining(string a, KnowledgeBase KB)
         {
+            mustBeTrue = new List<SimpleSentence>();
             Sentence q = SentenceParser.ParseSentence(a);
-            Inferred = new Model(KB.GetSymbols(), false);
-            Inferred.makeTrue(KB.currentlyTrue);
-            bool result = PL_BC_ENTAILS(KB, (SimpleSentence)(q));
-            Result(result);
+            facts = KB.currentlyTrue();
+            mustBeTrue.Add((SimpleSentence)q);
+            result = PL_BC_ENTAILS(KB, (SimpleSentence)(q));
+            Result();
         }
 
-        public override string Result(bool result)
+        public override string Result()
         {
-            string stringResult = "";
+            string temp = "";
             if (result)
             {
-                stringResult += 
+                temp += "YES: ";
+                for(int i = mustBeTrue.Count - 1; i > -1 ; i--)
+                {
+                    temp += (mustBeTrue[i].GetSymbols()[0]) + " ";
+                }
             }
+            else
+            { 
+                temp = "NO";
+            }
+            return temp;
         }
 
-        public bool PL_BC_ENTAILS(KnowledgeBase KB, SimpleSentence q, List<SimpleSentence> facts)
+        public bool PL_BC_ENTAILS(KnowledgeBase KB, SimpleSentence q)
         {
             Queue<SimpleSentence> agenda = new Queue<SimpleSentence>();
             agenda.Enqueue(q);
             while (agenda.Count > 0)
             {
                 SimpleSentence p = agenda.Dequeue();
-                if (!(facts.Contains(p)))
+                if (!ContainedInFacts(p, facts))
                 {
                     List<SimpleSentence> temp = new List<SimpleSentence>(KB.getRulesWith(p));
                     foreach (SimpleSentence simp in temp)
                     {
                         agenda.Enqueue(simp);
+                        mustBeTrue.Add(simp);
                     }
-
-                    /*List<ComplexSentence> temp = new List<ComplexSentence>(KB.getRulesWith(p));
-                    foreach (ComplexSentence s in temp)
-                    {
-                        List<SimpleSentence> temp2 = new List<SimpleSentence>(KB.getSimple(s));
-                        foreach (SimpleSentence s2 in temp2)
-                        {
-                            agenda.Enqueue(s2);
-                        }
-                    }*/
-
                 }
-                if (KB.isAllTrue(agenda))
+                if (isAllTrue(agenda, facts))
                 {
                     return true;
                 }
-                
+
             }
             return false;
+        }
+
+        public bool isAllTrue(Queue<SimpleSentence> agenda, List<SimpleSentence> facts)
+        {
+           if (agenda.Count == 0) return false;
+           foreach(SimpleSentence s in agenda)
+            {
+                if (!ContainedInFacts(s, facts)) return false;
+            }
+            return true;
+        }
+
+        public bool ContainedInFacts(SimpleSentence s, List<SimpleSentence> facts)
+        {
+            string proposition = s.GetSymbols()[0];
+            foreach(SimpleSentence f in facts)
+            {
+                string fact = f.GetSymbols()[0];
+                if (fact == proposition) return true;
+            }
+            return false;
+        }
     }
 }
+

@@ -154,12 +154,19 @@ namespace InferenceEngine
         public List<Sentence> getSentencesWith(SimpleSentence p)
         {
             List<Sentence> temp = new List<Sentence>();
-            foreach(Sentence s in _kb)
+            string pSymbol = p.GetSymbols()[0];
+            List<String> sSymbols = new List<string>();
+            foreach (Sentence s in _kb)
             {
-                if(s.GetSymbols().Contains(p.GetSymbols()[0]))
+                if (s is ComplexSentence)
                 {
-                    temp.Add(s);
+                    sSymbols = ((ComplexSentence)s).Body.GetSymbols();
+                    if (sSymbols.Contains(pSymbol))
+                    {
+                        if (s is ComplexSentence) temp.Add(s);
+                    }
                 }
+                
             }
             return temp;
 
@@ -168,61 +175,45 @@ namespace InferenceEngine
         public Dictionary<Sentence, int> getCount()
         {
             Dictionary<Sentence, int> temp = new Dictionary<Sentence, int>();
-            Dictionary<string, int> added = new Dictionary<string, int>();
-
             foreach(Sentence s in _kb)
             {
-                if(s is SimpleSentence)
-                {
-                    if (!added.ContainsKey(s.SymbolsAsSentence()))
-                    {
-                        temp.Add(s, 0);
-                        added.Add(s.SymbolsAsSentence(),0);
-                    } else
-                    {
-                        added[s.SymbolsAsSentence()]++;
-                    }
-                }
                 if(s is ComplexSentence)
                 {
-                    Sentence head = s.Head();
-                    Sentence body = ((ComplexSentence)s).Body;
-                    if (!added.ContainsKey(head.SymbolsAsSentence()))
-                    {
-                    temp.Add(head, 0);
-                    added.Add(head.SymbolsAsSentence(),0);
-                    } 
-                    else
-                    {
-                        added[s.SymbolsAsSentence()]++;
-                    }
-                    if(!added.ContainsKey(body.SymbolsAsSentence()))
-                    {
-                    temp.Add(body, 0);
-                    added.Add(body.SymbolsAsSentence(),0);
-                    } 
-                    else
-                    {
-                        added[s.SymbolsAsSentence()]++;
-                    }
-                    
+                    int count = s.getCount();
+                    temp.Add(((ComplexSentence)s).Body, count);
                 }
-            }
-
-            foreach(Sentence s in _kb)
-            {
-                if (s is SimpleSentence)
-                {
-                    added[s.SymbolsAsSentence()]++;
-                } else
-                {
-                    string body = ((ComplexSentence)s).Body.SymbolsAsSentence();
-                    added[body]++;
-                    string head = ((ComplexSentence)s).Head().SymbolsAsSentence();
-                    added[head]++;
-                }
+               
             }
             return temp;
         }
+
+
+        // KB.getRulesWith(proposition p)
+        // return the symbols for clauses where (x) => p
+        public List<SimpleSentence> getRulesWith(SimpleSentence p)
+        {
+            List<SimpleSentence> result = new List<SimpleSentence>();
+            foreach(Sentence s in _kb)
+            {
+                if(s is ComplexSentence)
+                {
+                    if(s.getHead().GetSymbols()[0] == p.GetSymbols()[0]) // if sentence entails p
+                    {
+                        if(((ComplexSentence)s).Body is SimpleSentence)
+                        {
+                            result.Add(((ComplexSentence)s).Body.getHead());
+                        }
+                        if (((ComplexSentence)s).Body is ComplexSentence)
+                        {
+                            result.AddRange(((ComplexSentence)s).GetAllSimpleSentences());
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
+
+
     }
 }

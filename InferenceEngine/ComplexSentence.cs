@@ -7,10 +7,10 @@ namespace InferenceEngine
     class ComplexSentence : Sentence
     {
         Sentence _body;
-        SimpleSentence _head;
+        Sentence _head;
         Connective _connective;
 
-        public ComplexSentence(Sentence body, SimpleSentence head, bool isFalse, Connective connective) : base(isFalse)
+        public ComplexSentence(Sentence body, Sentence head, bool isFalse, Connective connective) : base(isFalse)
         {
             _body = body;
             _head = head;
@@ -25,10 +25,21 @@ namespace InferenceEngine
             }
         }
 
+        public Sentence Head
+        {
+            get
+            {
+                return _head;
+            }
+        }
+
         public override SimpleSentence getHead()
         {
-            return _head;
-            
+            if (_head is SimpleSentence) return (SimpleSentence)_head;
+            else
+            {
+                return null;
+            }
         }
 
         public Connective Connective
@@ -39,7 +50,7 @@ namespace InferenceEngine
             }
         }
 
-        public override string SymbolsAsSentence()
+        public override string SymbolsAsString()
         {
             List<String> temp = GetSymbols();
             String result = "";
@@ -50,12 +61,45 @@ namespace InferenceEngine
             return result;
         }
 
+        // get count of symbols in the body
+        public override int getCount()
+        {
+            int count = (Body.GetSymbols().Count);
+            return count;
+        }
+
+        //public List<int> GetHeadAndBodyCount(Dictionary<string, int> SymbolsAsString)
+        //{
+        //    List<int> temp = new List<int>();
+        //    int value;
+            
+        //    switch(_connective)
+        //    {
+        //        case (Connective.AND):
+        //            value = SymbolsAsString[GetCount()[0]];
+        //            temp.Add(value);
+        //            break;
+        //        case (Connective.OR):
+        //            value = SymbolsAsString[GetCount()[0]];
+        //            temp.Add(value);
+        //            break;
+        //        case (Connective.IMPLICATION):
+        //            int headValue = SymbolsAsString[GetCount()[0]];
+        //            int bodyValue = SymbolsAsString[GetCount()[1]];
+        //            temp.Add(headValue);
+        //            temp.Add(bodyValue);
+        //            break;
+        //    }
+
+        //    return temp;
+        //}
+
         public override List<String> GetSymbols()
         {
             List<String> symbols = new List<String>();
             List<String> temp;
             // get symbols within head and body
-            temp = Head().GetSymbols();
+            temp = Head.GetSymbols();
             foreach(string s in temp)
             {
                 if (!symbols.Contains(s))
@@ -72,6 +116,20 @@ namespace InferenceEngine
                 }
             }
             return symbols;
+        }
+
+        public List<SimpleSentence> GetAllSimpleSentences()
+        {
+            List<SimpleSentence> result = new List<SimpleSentence>();
+            if(Body is SimpleSentence)
+            {
+                result.Add((SimpleSentence)Body);
+                return result;
+            } else
+            {
+                result.AddRange(((ComplexSentence)Body).GetAllSimpleSentences());
+            }
+            return result;
         }
 
         public override bool Entails(Model model)
